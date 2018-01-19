@@ -6,6 +6,11 @@ import { HttpClientXsrfModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HttpXsrfInterceptor } from '@angular/common/http/src/xsrf';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token.interceptor';
+
+import { AuthService } from './auth.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -15,7 +20,13 @@ import { HttpXsrfInterceptor } from '@angular/common/http/src/xsrf';
     HttpClientModule,
     HttpClientXsrfModule
   ],
-  providers: [  ],
+  providers: [ 
+    AuthService,
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
